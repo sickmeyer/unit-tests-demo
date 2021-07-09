@@ -7,4 +7,14 @@ jobs:
   PR-Edited:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+      - uses: mshick/add-pr-comment@v1
+        with:
+          repo-token: ${{ secrets.TEST_TOKEN }}
+          message: |
+            **Howdie!**
+      - run: npm install
+      - run: npm test
