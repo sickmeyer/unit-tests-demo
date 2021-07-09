@@ -26,6 +26,7 @@ jobs:
       - name: mocha-npm-test
         id: jobTest
         run: npm test
+        continue-on-error: true
       
       - name: Comment if failed test
         if: steps.jobTest.conclusion == 'failure'
