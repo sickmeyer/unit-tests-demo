@@ -1,0 +1,14 @@
+name: GitHub Actions PR
+on:
+  pull_request:
+    types: [opened]
+
+# on:
+#   pull_request_review_comment:
+#     types: [created, deleted]
+
+jobs:
+  PR-Created:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
