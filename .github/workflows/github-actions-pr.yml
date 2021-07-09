@@ -1,12 +1,12 @@
 name: GitHub Actions PR
 on:
   pull_request:
-    types: [opened,edited,synchronize]
+    types: [opened, edited, synchronize]
 
 jobs:
   PR-Action:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -18,28 +18,25 @@ jobs:
           message: |
             PR Action in progress
           allow-repeats: true
-      
+
       - name: install-node-modules
         id: jobModules
         run: npm ci
-      
+
       - name: mocha-npm-test
-        id: jobTest
-        run: npm test > $HOME/test.log
+        id: mocha-npm-test
+        run: npm test
         continue-on-error: true
-      
-      - name: Parse Test Log
-        id: jobLog
-        run: cat $HOME/test.log
 
       - name: Comment if failed test
-        if: steps.jobTest.conclusion == 'failure'
+        if: steps.mocha-npm-test.conclusion == 'failure'
         uses: mshick/add-pr-comment@v1
         with:
           repo-token: ${{ secrets.TEST_TOKEN }}
           message: |
             Testing failed.
           allow-repeats: true
+
       - name: Stop if failed test
-        if: steps.jobTest.conclusion == 'failure'
+        if: steps.mocha-npm-test.conclusion == 'failure'
         run: exit 1
