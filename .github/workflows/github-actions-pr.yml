@@ -41,7 +41,7 @@ jobs:
         if: ${{ failure() }}
         run: exit 1
 
-      - name: Comment if failed test
+      - name: Comment if successful test
         if: ${{ success() }}
         uses: mshick/add-pr-comment@v1
         with:
