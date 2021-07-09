@@ -7,14 +7,29 @@ jobs:
   PR-Created:
     runs-on: ubuntu-latest
     steps:
+      - name: Install dependencies
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: "14"
+
+      - name: Leave a PR comment
       - uses: mshick/add-pr-comment@v1
         with:
           repo-token: ${{ secrets.TEST_TOKEN }}
           message: |
-            CI Comment
-      - run: npm install
-      - run: npm test
+            CI Comment 1
+
+      - name: Install node modules
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+      - name: Step To run on failure
+        if: ${{ failure() }}
+      - uses: mshick/add-pr-comment@v1
+        with:
+          repo-token: ${{ secrets.TEST_TOKEN }}
+          message: |
+            Testing failed. Please check and try again.
