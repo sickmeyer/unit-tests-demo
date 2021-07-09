@@ -21,13 +21,17 @@ jobs:
       
       - name: install-node-modules
         id: jobModules
-        run: npm install
+        run: npm ci
       
       - name: mocha-npm-test
         id: jobTest
-        run: npm test
+        run: npm test > $HOME/test.log
         continue-on-error: true
       
+      - name: Parse Test Log
+        id: jobLog
+        run: cat $HOME/test.log
+
       - name: Comment if failed test
         if: steps.jobTest.conclusion == 'failure'
         uses: mshick/add-pr-comment@v1
