@@ -27,7 +27,7 @@ jobs:
       - run: npm test
 
       - name: Step To run on failure
-        if: ${{ failure() }}
+      - if: ${{ failure() }}
       - uses: mshick/add-pr-comment@v1
         with:
           repo-token: ${{ secrets.TEST_TOKEN }}
