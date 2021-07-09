@@ -8,7 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - run: echo "failed=0" >> $GITHUB_ENV
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
@@ -19,16 +18,23 @@ jobs:
           message: |
             PR Action in progress
           allow-repeats: true
+      
       - name: install-node-modules
+        id: jobModules
         run: npm install
       
       - name: mocha-npm-test
+        id: jobTest
         run: npm test
-        if: ${{ failure() }} | echo "failed=1" >> $GITHUB_ENV
+      
+      - name: Comment if failed test
+        if: steps.jobTest.outcome == 'failure'
         uses: mshick/add-pr-comment@v1
         with:
           repo-token: ${{ secrets.TEST_TOKEN }}
           message: |
             Testing failed.
           allow-repeats: true
-      - run: echo "exit ${{ env.failed }}"
+      - name: Stop if failed test
+        if: steps.jobTest.outcome == 'failure'
+        run: exit 1
