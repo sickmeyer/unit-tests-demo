@@ -21,10 +21,10 @@ jobs:
             CI Comment 2
 
       - name: Install node modules
-        run: npm install
+      - run: npm install
 
       - name: Run tests
-        run: npm test
+      - run: npm test
 
       - name: Step To run on failure
         if: ${{ failure() }}
