@@ -41,6 +41,15 @@ jobs:
         if: ${{ failure() }}
         run: exit 1
 
+      - name: Comment if failed test
+        if: ${{ success() }}
+        uses: mshick/add-pr-comment@v1
+        with:
+          repo-token: ${{ secrets.TEST_TOKEN }}
+          message: |
+            PR Action finished successfully.
+          allow-repeats: true
+      
       - name: Finish if successful test
         if: ${{ success() }}
         run: exit 0
