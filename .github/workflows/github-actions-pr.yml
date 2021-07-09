@@ -34,9 +34,9 @@ jobs:
         with:
           repo-token: ${{ secrets.TEST_TOKEN }}
           message: |
-            Testing failed.
+            Testing failed. Please look into this.
           allow-repeats: true
 
       - name: Stop if failed test
-        if: steps.mocha-npm-test.conclusion == 'failure'
+        if: ${{ failure() }} || steps.mocha-npm-test.conclusion == 'failure'
         run: exit 1
