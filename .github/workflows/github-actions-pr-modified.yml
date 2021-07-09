@@ -15,6 +15,6 @@ jobs:
         with:
           repo-token: ${{ secrets.TEST_TOKEN }}
           message: |
-            **Howdie!**
+            CI Comment 2
       - run: npm install
       - run: npm test
