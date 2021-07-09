@@ -40,3 +40,7 @@ jobs:
       - name: Stop if failed test
         if: ${{ failure() }} || steps.mocha-npm-test.conclusion == 'failure'
         run: exit 1
+
+      - name: Finish if successful test
+        if: ${{ success() }}
+        run: exit 0
