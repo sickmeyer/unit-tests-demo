@@ -15,5 +15,6 @@ jobs:
         with:
           message: |
             **Howdie!**
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - run: npm install
       - run: npm test
