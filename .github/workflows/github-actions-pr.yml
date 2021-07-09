@@ -1,0 +1,55 @@
+name: GitHub Actions PR
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+
+jobs:
+  PR-Action:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+      - uses: mshick/add-pr-comment@v1
+        with:
+          repo-token: ${{ secrets.TEST_TOKEN }}
+          message: |
+            PR Action in progress
+          allow-repeats: true
+
+      - name: install-node-modules
+        id: jobModules
+        run: npm ci
+
+      - name: mocha-npm-test
+        id: mocha-npm-test
+        run: npm test
+        continue-on-error: true
+
+      - name: Comment if failed test
+        if: ${{ failure() }}
+        uses: mshick/add-pr-comment@v1
+        with:
+          repo-token: ${{ secrets.TEST_TOKEN }}
+          message: |
+            Testing failed. Please look into this.
+          allow-repeats: true
+
+      - name: Stop if failed test
+        if: ${{ failure() }}
+        run: exit 1
+
+      - name: Comment if successful test
+        if: ${{ success() }}
+        uses: mshick/add-pr-comment@v1
+        with:
+          repo-token: ${{ secrets.TEST_TOKEN }}
+          message: |
+            PR Action finished successfully.
+          allow-repeats: true
+      
+      - name: Finish if successful test
+        if: ${{ success() }}
+        run: exit 0
