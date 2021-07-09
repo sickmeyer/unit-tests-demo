@@ -7,23 +7,16 @@ jobs:
   PR-Edited:
     runs-on: ubuntu-latest
     steps:
-      - name: Install dependencies
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: "14"
-
-      - name: Leave a PR comment
       - uses: mshick/add-pr-comment@v1
         with:
           repo-token: ${{ secrets.TEST_TOKEN }}
           message: |
             CI Comment 2
-
-      - name: Install node modules
       - run: npm install
-
-      - name: Run tests
       - run: npm test
         if: ${{ failure() }}
       - uses: mshick/add-pr-comment@v1
