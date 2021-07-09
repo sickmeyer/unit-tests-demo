@@ -28,7 +28,7 @@ jobs:
         run: npm test
       
       - name: Comment if failed test
-        if: steps.jobTest.outcome == 'failure'
+        if: steps.jobTest.conclusion == 'failure'
         uses: mshick/add-pr-comment@v1
         with:
           repo-token: ${{ secrets.TEST_TOKEN }}
@@ -36,5 +36,5 @@ jobs:
             Testing failed.
           allow-repeats: true
       - name: Stop if failed test
-        if: steps.jobTest.outcome == 'failure'
+        if: steps.jobTest.conclusion == 'failure'
         run: exit 1
