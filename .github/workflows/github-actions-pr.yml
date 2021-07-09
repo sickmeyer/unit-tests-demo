@@ -1,10 +1,10 @@
-name: GitHub Actions PR Created
+name: GitHub Actions PR
 on:
   pull_request:
-    types: [opened]
+    types: [opened,edited]
 
 jobs:
-  PR-Created:
+  PR-Action:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -15,7 +15,7 @@ jobs:
         with:
           repo-token: ${{ secrets.TEST_TOKEN }}
           message: |
-            CI Comment 1
+            PR Action in progress
       - run: npm install
       - run: npm test
         if: ${{ failure() }}
@@ -23,4 +23,5 @@ jobs:
         with:
           repo-token: ${{ secrets.TEST_TOKEN }}
           message: |
-            Testing failed. Please check and try again.
+            Testing failed.
+      - run: exit 1
